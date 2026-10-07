@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sign-Off</title>
+<style>
+:root{--c:#A6192E;--ink:#1F2328;--gold:#F2B22D;--g:#5A5F66;--rule:#D0D4D9;--wash:#FBF3DC;--soft:#F5F6F7;--serif:Georgia,"Times New Roman",serif;--sans:Arial,Helvetica,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.6}
+.top{background:var(--ink);color:#fff;border-bottom:6px solid var(--gold)}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px}
+.top .wrap{padding-top:34px;padding-bottom:30px}
+h1{font-family:var(--serif);font-weight:normal;font-size:46px;line-height:1.1;margin:0 0 10px;letter-spacing:-.5px}
+.top p{margin:0;max-width:34em;color:#E6E8EA;font-size:19px}
+main.wrap{padding-top:8px;padding-bottom:60px}
+section{padding:30px 0 6px;border-top:1px solid var(--rule)}
+section:first-of-type{border-top:0}
+h2{font-family:var(--sans);font-size:24px;line-height:1.25;margin:0 0 12px}
+h2 .n{display:inline-block;min-width:1.5em;color:var(--c)}
+h3{font-family:var(--sans);font-size:17px;margin:20px 0 6px}
+p{margin:0 0 14px;max-width:40em}
+.sans{font-family:var(--sans)}
+.small{font-family:var(--sans);font-size:14px;color:var(--g)}
+.note{border-left:5px solid var(--gold);background:var(--soft);padding:12px 16px;margin:0 0 18px;max-width:42em}
+.note p:last-child{margin-bottom:0}
+button,select,input,textarea{font:inherit}
+button{font-family:var(--sans);font-size:15px;font-weight:bold;background:#fff;color:var(--ink);border:2px solid var(--ink);border-radius:4px;padding:9px 14px;cursor:pointer}
+button:hover{background:var(--soft)}
+button.pri{background:var(--c);border-color:var(--c);color:#fff}
+button.pri:hover{background:#8C1526}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.sm{font-size:13px;padding:5px 9px;border-width:1px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 16px}
+.card{text-align:left;font-weight:normal;font-family:var(--serif);font-size:16px;line-height:1.45;padding:14px;border:2px solid var(--rule);border-radius:4px}
+.card strong{display:block;font-family:var(--sans);font-size:17px;margin-bottom:4px}
+.card[aria-pressed="true"]{border-color:var(--c);box-shadow:inset 0 0 0 2px var(--c)}
+.brief{display:none}
+.brief.on{display:block}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 16px}
+.cost{border-top:4px solid var(--ink);padding-top:8px}
+.cost.bad{border-top-color:var(--c)}
+.cost p{font-size:16px;margin:0}
+.cost b{font-family:var(--sans);font-size:15px;display:block;margin-bottom:2px}
+details{border:1px solid var(--rule);border-radius:4px;margin:0 0 8px;max-width:42em}
+summary{cursor:pointer;font-family:var(--sans);font-weight:bold;font-size:16px;padding:10px 14px}
+details p{padding:0 14px;font-size:16px}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:8px 0 6px;font-family:var(--sans)}
+.ctl label{font-weight:bold}
+.ctl input[type=range]{flex:1 1 260px;min-width:200px;accent-color:var(--c);height:28px}
+.big{font-family:var(--sans);font-weight:bold;font-size:30px;min-width:1.6em;text-align:center;color:var(--c)}
+.grp{margin:14px 0 4px}
+.grp h3{margin:0 0 2px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
+.grp h3 span{font-weight:normal;font-size:14px;color:var(--g)}
+svg.strip{display:block;width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;background:#fff}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 0;font-family:var(--sans);font-size:14px;line-height:1.35}
+.nums div{background:var(--soft);padding:8px 10px;border-radius:4px}
+.nums b{display:block;font-size:20px}
+.nums .err b{color:var(--c)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--sans);font-size:14px;color:var(--g);margin:10px 0 0}
+.legend svg{vertical-align:-2px;margin-right:4px}
+.verdict{background:var(--ink);color:#fff;padding:16px 18px;border-radius:4px;margin:18px 0 14px}
+.verdict p{max-width:none;margin:0 0 8px;font-size:17px}
+.verdict p:last-child{margin:0}
+.verdict .lab{font-family:var(--sans);font-size:13px;font-weight:bold;color:var(--gold);margin-bottom:4px}
+.flag{font-family:var(--sans);font-weight:bold}
+.flag.no{color:#FFB3BD}.flag.ok{color:#BFE5C2}
+.tw{overflow-x:auto;margin:0 0 14px}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14px;line-height:1.35}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--rule)}
+thead th{border-bottom:2px solid var(--ink);vertical-align:bottom}
+td.num{white-space:nowrap}
+.empty{font-family:var(--sans);font-size:15px;color:var(--g);border:1px dashed var(--rule);border-radius:4px;padding:14px;margin:0 0 14px}
+.field{margin:0 0 14px;max-width:42em}
+.field label,.field legend{display:block;font-family:var(--sans);font-weight:bold;font-size:15px;margin-bottom:4px;padding:0}
+.field input[type=text],.field textarea{width:100%;border:2px solid var(--ink);border-radius:4px;padding:8px 10px;font-family:var(--serif);font-size:17px}
+fieldset{border:0;padding:0;margin:0 0 14px}
+.opt{display:block;font-family:var(--sans);font-size:16px;margin:4px 0}
+.opt input{margin-right:8px;accent-color:var(--c);width:18px;height:18px;vertical-align:-3px}
+.need{font-family:var(--sans);font-size:15px;color:var(--c);margin:0 0 12px}
+.need ul{margin:4px 0 0;padding-left:20px}
+#record{display:none;border:2px solid var(--ink);padding:22px 24px;margin:18px 0}
+#record.on{display:block}
+#record h2{font-family:var(--serif);font-weight:normal;font-size:30px;margin:0 0 2px}
+#record .rule{border-top:4px solid var(--c);margin:10px 0 14px}
+#record dl{display:grid;grid-template-columns:11em 1fr;gap:4px 12px;margin:0 0 14px;font-size:16px}
+#record dt{font-family:var(--sans);font-weight:bold;font-size:14px;padding-top:2px}
+#record dd{margin:0}
+#record .sig{margin-top:22px;border-top:1px solid var(--ink);padding-top:6px;font-family:var(--sans);font-size:14px;max-width:22em}
+.acts{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 14px}
+footer{border-top:1px solid var(--rule);margin-top:34px;padding-top:14px}
+.printonly{display:none}
+@media (max-width:640px){body{font-size:17px}h1{font-size:36px}.cards,.two{grid-template-columns:1fr}.nums{grid-template-columns:1fr}#record dl{grid-template-columns:1fr}#record dt{margin-top:8px}}
+@media print{.top,section,footer,.acts,.noprint{display:none!important}main.wrap{padding:0;max-width:none}#printhost{display:block!important}#record{display:block!important;border:0;padding:0;margin:0}body{font-size:12pt}table{font-size:9.5pt}.printonly{display:block}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>The Sign-Off</h1>
+  <p>Software is about to decide which applications get accepted: who gets a job interview, who gets a loan, or who gets an apartment. It scores every applicant from 0 to 100 and rejects everyone below a cutoff. You set the cutoff, see who it gets wrong, and put your name on the decision.</p>
+</div></header>
+
+<main class="wrap">
+
+<section id="s1" aria-labelledby="h1x">
+  <h2 id="h1x"><span class="n">1</span>Pick the decision you will sign</h2>
+  <p>Pick one of three application screeners. Each one reads applications and gives every applicant a score from 0 to 100. Applicants at or above the cutoff are accepted. Everyone below it is rejected.</p>
+  <div class="cards" id="cards"></div>
+  <div id="brief" class="brief">
+    <p id="role"></p>
+    <div class="two">
+      <div class="cost bad"><b id="fnHead"></b><p id="fnCost"></p></div>
+      <div class="cost"><b id="fpHead"></b><p id="fpCost"></p></div>
+    </div>
+    <div class="note"><p><strong class="sans">You are seeing something no real manager sees.</strong> This page knows which applicants would have worked out, including the ones the model turned away. A real organization never learns that about the people it rejects. The applicants here are simulated so you can count the mistakes.</p></div>
+  </div>
+</section>
+
+<section id="s2" aria-labelledby="h2x" hidden>
+  <h2 id="h2x"><span class="n">2</span>Ask the vendor</h2>
+  <p>The company that built the model will answer three questions. Open the ones you want answered before you sign. Your record shows which ones you asked.</p>
+  <div id="qa"></div>
+</section>
+
+<section id="s3" aria-labelledby="h3x" hidden>
+  <h2 id="h3x"><span class="n">3</span>Move the cutoff</h2>
+  <p>Each dot is one applicant, placed by the score the model gave. There are 100 applicants in each group. The vendor suggests a cutoff of <span id="vend"></span>. You are not bound by it.</p>
+  <div class="ctl">
+    <label for="cut">Cutoff</label>
+    <button class="sm" id="dn" aria-label="Lower the cutoff by 2">&minus; 2</button>
+    <input type="range" id="cut" min="20" max="90" step="2" value="56">
+    <button class="sm" id="up" aria-label="Raise the cutoff by 2">+ 2</button>
+    <span class="big" id="cutv" aria-hidden="true">56</span>
+  </div>
+  <div class="legend" aria-hidden="true">
+    <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#1F2328"/></svg><span id="lgQ"></span></span>
+    <span><svg width="14" height="14"><circle cx="7" cy="7" r="4.2" fill="#fff" stroke="#1F2328" stroke-width="1.6"/></svg><span id="lgU"></span></span>
+    <span><svg width="30" height="14"><circle cx="7" cy="7" r="5" fill="#A6192E"/><circle cx="22" cy="7" r="4.2" fill="#fff" stroke="#A6192E" stroke-width="1.8"/></svg>Red: the cutoff got this person wrong</span>
+    <span><svg width="14" height="14"><rect x="0" y="1" width="14" height="12" fill="#FBF3DC" stroke="#D0D4D9"/></svg>Shaded: at or above the cutoff</span>
+  </div>
+  <div class="grp"><h3><span class="sans" id="gA" style="font-weight:bold;font-size:17px;color:#1F2328"></span><span id="gAsub"></span></h3><div id="stripA"></div><div class="nums" id="numsA"></div></div>
+  <div class="grp"><h3><span class="sans" id="gB" style="font-weight:bold;font-size:17px;color:#1F2328"></span><span id="gBsub"></span></h3><div id="stripB"></div><div class="nums" id="numsB"></div></div>
+
+  <div class="verdict" aria-live="polite">
+    <p class="lab">At this cutoff</p>
+    <p id="v1"></p><p id="v2"></p><p id="v3"></p>
+  </div>
+  <p class="small" style="max-width:46em">The approval-rate check divides the lower group's approval rate by the higher one. United States employment regulators use 0.80 as a rule of thumb, called the four-fifths rule. A ratio under 0.80 gets a closer look. It is a screening test, not a verdict, and it comes from hiring. In the loan and rental scenarios it is a yardstick only.</p>
+
+  <h3>Cutoffs you want to compare</h3>
+  <p>Pin at least three cutoffs. You will sign one of them.</p>
+  <p><button id="pin" class="pri">Pin this cutoff</button> <span class="small" id="pinmsg" role="status"></span></p>
+  <div id="pins"></div>
+</section>
+
+<section id="s4" aria-labelledby="h4x" hidden>
+  <h2 id="h4x"><span class="n">4</span>Sign</h2>
+  <p>Choose the pinned cutoff you would defend, make the call, and sign. If your call is "do not deploy," choose the best cutoff you found and say why it still is not good enough.</p>
+  <fieldset><legend class="sans" style="font-weight:bold;font-size:15px;margin-bottom:4px">The cutoff I am signing</legend><div id="pick"></div></fieldset>
+  <fieldset><legend class="sans" style="font-weight:bold;font-size:15px;margin-bottom:4px">My decision</legend>
+    <label class="opt"><input type="radio" name="dec" value="Deploy">Deploy</label>
+    <label class="opt"><input type="radio" name="dec" value="Deploy with conditions">Deploy with conditions</label>
+    <label class="opt"><input type="radio" name="dec" value="Do not deploy">Do not deploy</label>
+  </fieldset>
+  <div class="field"><label for="why">My reason, in one or two sentences</label><textarea id="why" rows="3" maxlength="500"></textarea></div>
+  <div class="field"><label for="nm">My name</label><input type="text" id="nm" maxlength="80" autocomplete="name"></div>
+  <div class="need" id="need" role="status"></div>
+  <p><button id="sign" class="pri">Sign and create my record</button></p>
+</section>
+
+<div id="printhost">
+<div id="record" tabindex="-1" aria-label="Sign-off record"></div>
+</div>
+<div class="acts" id="acts" hidden>
+  <button id="print" class="pri">Print or save as PDF</button>
+  <button id="copy">Copy record as text</button>
+  <span class="small" id="copymsg" role="status"></span>
+</div>
+<div class="note noprint" id="next" hidden><p><strong class="sans">Next: write your memo.</strong> Open with your decision. Then say who carries the risk at the cutoff you signed, what rule applies, and who answers for it when the model gets a person wrong. Attach this record.</p></div>
+
+<footer>
+  <p class="small">Every organization, applicant, and vendor on this page is fictional. The numbers were generated for this exercise and describe no real group of people. Nothing here is legal advice. Your work is saved in this browser only.</p>
+  <p class="small"><button class="sm" id="reset">Start over</button></p>
+  <p class="small">&copy; 2026 Cynthia McGinnis</p>
+</footer>
+</main>
+
+<script>
+var DATA={"hire":{"A":[[55,1],[59,1],[62,1],[44,1],[58,1],[75,1],[61,1],[73,1],[65,1],[57,1],[76,1],[58,1],[76,1],[69,1],[56,1],[85,1],[76,1],[78,1],[63,1],[57,1],[72,1],[71,1],[83,1],[82,1],[55,1],[50,1],[75,1],[78,1],[59,1],[66,1],[60,1],[65,1],[69,1],[52,1],[77,1],[83,1],[60,1],[53,1],[82,1],[64,1],[81,1],[58,1],[51,1],[93,1],[54,1],[88,1],[60,1],[78,1],[59,1],[73,1],[33,0],[30,0],[28,0],[52,0],[48,0],[29,0],[41,0],[39,0],[37,0],[36,0],[32,0],[44,0],[38,0],[19,0],[48,0],[48,0],[50,0],[50,0],[38,0],[53,0],[29,0],[49,0],[64,0],[41,0],[47,0],[47,0],[55,0],[33,0],[28,0],[67,0],[40,0],[40,0],[34,0],[34,0],[41,0],[42,0],[38,0],[35,0],[68,0],[51,0],[51,0],[29,0],[42,0],[48,0],[41,0],[57,0],[55,0],[38,0],[34,0],[40,0]],"B":[[58,1],[62,1],[69,1],[51,1],[65,1],[72,1],[37,1],[37,1],[39,1],[53,1],[63,1],[48,1],[91,1],[47,1],[55,1],[62,1],[73,1],[52,1],[47,1],[68,1],[23,1],[65,1],[67,1],[35,1],[65,1],[40,1],[48,1],[53,1],[54,1],[54,1],[47,1],[61,1],[58,1],[79,1],[61,1],[67,1],[68,1],[32,1],[49,1],[53,1],[67,1],[37,1],[78,1],[43,1],[55,1],[49,1],[58,1],[53,1],[56,1],[49,1],[16,0],[17,0],[22,0],[42,0],[27,0],[59,0],[39,0],[30,0],[36,0],[35,0],[39,0],[46,0],[24,0],[37,0],[35,0],[31,0],[38,0],[26,0],[38,0],[28,0],[47,0],[44,0],[38,0],[38,0],[50,0],[43,0],[47,0],[56,0],[50,0],[30,0],[48,0],[42,0],[11,0],[44,0],[51,0],[27,0],[32,0],[40,0],[50,0],[25,0],[57,0],[57,0],[49,0],[36,0],[49,0],[59,0],[67,0],[44,0],[42,0],[63,0]]},"loan":{"A":[[31,0],[33,0],[35,0],[35,0],[37,0],[38,0],[38,1],[40,0],[42,0],[43,1],[45,0],[45,0],[45,0],[46,1],[47,1],[47,1],[50,0],[50,0],[51,0],[51,1],[53,1],[54,1],[54,1],[55,0],[55,0],[55,0],[56,1],[56,1],[56,1],[56,1],[57,1],[58,1],[58,1],[59,1],[59,1],[60,0],[60,0],[60,1],[61,1],[62,1],[62,1],[62,1],[63,1],[63,1],[63,1],[64,1],[64,1],[64,1],[65,0],[65,1],[66,1],[66,1],[66,1],[66,1],[67,1],[67,1],[68,1],[69,1],[70,0],[70,0],[70,1],[70,1],[70,1],[71,1],[71,1],[71,1],[72,1],[72,1],[72,1],[72,1],[72,1],[73,1],[73,1],[73,1],[73,1],[73,1],[73,1],[74,1],[74,1],[74,1],[74,1],[75,1],[75,1],[76,1],[77,1],[78,1],[78,1],[78,1],[79,1],[79,1],[80,1],[80,1],[83,1],[83,1],[85,1],[86,1],[86,1],[87,1],[88,1],[95,1]],"B":[[24,0],[25,0],[27,0],[30,0],[32,0],[32,0],[33,0],[34,1],[35,0],[35,0],[35,0],[36,0],[38,0],[38,0],[38,1],[40,0],[40,0],[41,0],[41,0],[42,0],[42,0],[42,0],[42,0],[42,1],[43,1],[43,1],[43,1],[44,1],[45,0],[45,0],[45,0],[46,0],[47,0],[47,1],[47,1],[49,1],[49,1],[50,0],[50,0],[50,0],[50,0],[51,0],[51,0],[52,0],[52,0],[52,1],[52,1],[52,1],[53,1],[53,1],[53,1],[54,1],[54,1],[54,1],[54,1],[54,1],[54,1],[55,0],[55,0],[55,0],[55,0],[55,0],[55,1],[56,1],[56,1],[56,1],[56,1],[56,1],[56,1],[56,1],[57,1],[57,1],[58,1],[59,1],[59,1],[59,1],[59,1],[59,1],[60,0],[61,0],[61,1],[61,1],[63,1],[63,1],[64,1],[65,1],[66,1],[67,1],[68,1],[70,0],[70,1],[70,1],[70,1],[71,1],[71,1],[73,1],[74,1],[75,1],[77,1],[78,1]]},"rent":{"A":[[75,1],[68,1],[71,1],[63,1],[76,1],[62,1],[79,1],[61,1],[79,1],[78,1],[75,1],[77,1],[64,1],[78,1],[82,1],[64,1],[78,1],[79,1],[70,1],[62,1],[79,1],[61,1],[64,1],[69,1],[82,1],[68,1],[58,1],[79,1],[61,1],[85,1],[65,1],[61,1],[57,1],[49,1],[70,1],[66,1],[75,1],[63,1],[71,1],[68,1],[56,1],[73,1],[69,1],[71,1],[66,1],[57,1],[68,1],[72,1],[70,1],[68,1],[68,1],[65,1],[87,1],[63,1],[72,1],[76,1],[81,1],[85,1],[72,1],[81,1],[40,0],[46,0],[40,0],[38,0],[33,0],[26,0],[49,0],[38,0],[37,0],[39,0],[37,0],[53,0],[44,0],[32,0],[20,0],[30,0],[39,0],[39,0],[49,0],[43,0],[42,0],[36,0],[24,0],[39,0],[27,0],[33,0],[50,0],[37,0],[38,0],[38,0],[38,0],[22,0],[32,0],[34,0],[49,0],[29,0],[45,0],[50,0],[29,0],[53,0]],"B":[[63,1],[78,1],[64,1],[62,1],[82,1],[63,1],[81,1],[85,1],[68,1],[79,1],[23,1],[39,1],[73,1],[72,1],[54,1],[85,1],[82,1],[74,1],[63,1],[56,1],[75,1],[50,1],[66,1],[82,1],[33,1],[84,1],[70,1],[47,1],[59,1],[42,1],[85,1],[31,1],[64,1],[78,1],[69,1],[30,1],[77,1],[59,1],[84,1],[80,1],[19,1],[95,1],[31,1],[48,1],[88,1],[44,1],[94,1],[69,1],[39,1],[44,1],[54,1],[69,1],[37,1],[53,1],[41,1],[87,1],[89,1],[67,1],[58,1],[89,1],[23,0],[58,0],[41,0],[23,0],[55,0],[49,0],[38,0],[51,0],[47,0],[45,0],[60,0],[47,0],[71,0],[48,0],[11,0],[38,0],[54,0],[48,0],[18,0],[19,0],[41,0],[31,0],[42,0],[29,0],[37,0],[48,0],[16,0],[67,0],[68,0],[25,0],[35,0],[25,0],[67,0],[43,0],[30,0],[27,0],[7,0],[56,0],[52,0],[31,0]]}};
+var STORE="the_sign_off_v1";
+var SCN={
+ hire:{name:"Hiring screener",org:"Redfern Logistics",card:"A r\u00e9sum\u00e9 screener decides who gets an interview for shift supervisor jobs.",
+  role:"You are the operations director at Redfern Logistics. Human resources wants to switch on a r\u00e9sum\u00e9 screener for shift supervisor jobs. Applicants at or above the cutoff get an interview. The rest get a rejection email. Once it is on, no person reads a r\u00e9sum\u00e9 the screener rejects.",
+  A:"Applicants under 40",B:"Applicants 40 and over",a:"applicants under 40",b:"applicants 40 and over",
+  good:"would do the job well",bad:"would not do the job well",goodN:"capable",
+  yes:"interviewed",no:"screened out",Yes:"Interviewed",
+  fn:"Capable, screened out",fp:"Not capable, interviewed",
+  fnCost:"A capable supervisor never gets an interview. Nobody tells them why, and nobody at Redfern ever finds out.",
+  fpCost:"A manager spends an hour interviewing someone who cannot do the job. The cost is time.",
+  q:[["What data was the model trained on?","Ten years of Redfern's own hiring records. Of the supervisors hired in that period, 86 percent were under 40 on their start date."],
+     ["What exactly does the score predict?","How closely a r\u00e9sum\u00e9 resembles the r\u00e9sum\u00e9s of past hires who earned good first-year reviews. It does not measure whether a person can do the job."],
+     ["How was it tested, and on whom?","On a held-back sample of past applicants, as one pool. At the suggested cutoff it made the right call on about {ACC} percent of them. The vendor did not report results by age."]]},
+ loan:{name:"Loan approval",org:"Lakeshore Community Credit Union",card:"A credit model approves or denies $5,000 personal loans.",
+  role:"You are the lending manager at Lakeshore Community Credit Union. A vendor's model scores every applicant for a $5,000 personal loan. Applicants at or above the cutoff are approved automatically. The rest are denied automatically.",
+  A:"Applicants 30 and over",B:"Applicants under 30",a:"applicants 30 and over",b:"applicants under 30",
+  good:"would repay the loan",bad:"would default",goodN:"reliable",
+  yes:"approved",no:"denied",Yes:"Approved",
+  fn:"Would repay, denied",fp:"Would default, approved",
+  fnCost:"A person who would have repaid goes without the loan, or borrows somewhere else at a higher rate.",
+  fpCost:"The borrower defaults. The credit union loses money, and the borrower's credit record takes the damage.",
+  q:[["What data was the model trained on?","About 200,000 past personal loans from several lenders. Both age groups are well represented."],
+     ["What exactly does the score predict?","Whether the borrower repays the loan in full within 24 months."],
+     ["How was it tested, and on whom?","The vendor checked that a score means the same thing in both age groups. Take applicants who score in the 60s: about the same share repay in each group. In the lenders' records, borrowers under 30 repaid less often overall, so more of them score near or below the cutoff. At the suggested cutoff the model made the right call on about {ACC} percent of applicants."]]},
+ rent:{name:"Tenant screening",org:"Alder Street Property Management",card:"A screening service approves or denies apartment applications.",
+  role:"You are the regional manager at Alder Street Property Management, which runs 400 apartments. A screening service scores every rental applicant. Applications at or above the cutoff are approved. The rest are denied, and the applicant does not get the fee back.",
+  A:"Applicants with recent U.S. rental history",B:"Applicants with no recent U.S. rental history",a:"applicants with recent U.S. rental history",b:"applicants with no recent U.S. rental history",
+  subB:"First-time renters and families returning from overseas",
+  good:"would pay rent on time",bad:"would fall behind on rent",goodN:"reliable",
+  yes:"approved",no:"denied",Yes:"Approved",
+  fn:"Would pay, denied",fp:"Would fall behind, approved",
+  fnCost:"A reliable tenant loses the apartment and the application fee, and starts the search over.",
+  fpCost:"A tenant falls behind. The company loses rent, and the tenant may end up with an eviction filing on their record.",
+  q:[["What data was the model trained on?","Credit bureau files and eviction court records from the United States. Applicants with no recent U.S. rental or credit activity have thin files, so the model has little to go on when it scores them."],
+     ["What exactly does the score predict?","Whether the applicant will have an eviction filing or a payment more than 60 days late within a year."],
+     ["How was it tested, and on whom?","On past applicants, as one pool. At the suggested cutoff it made the right call on about {ACC} percent of them. The vendor did not report results for applicants with thin files."]]}
+};
+var VENDOR=56, ORDER=["hire","loan","rent"];
+var st={scn:null,cut:VENDOR,pins:[],asked:[],lo:VENDOR,hi:VENDOR,pick:null,dec:"",why:"",nm:"",signed:null};
+function $(id){return document.getElementById(id)}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(st))}catch(e){}}
+function load(){try{var s=JSON.parse(localStorage.getItem(STORE)||"null");if(s&&s.scn&&SCN[s.scn]){for(var k in st){if(k in s)st[k]=s[k]}}}catch(e){}}
+function met(g,c){var tp=0,fn=0,fp=0,tn=0;for(var i=0;i<g.length;i++){var s=g[i][0],q=g[i][1];if(s>=c){q?tp++:fp++}else{q?fn++:tn++}}return{tp:tp,fn:fn,fp:fp,tn:tn,ap:tp+fp,q:tp+fn,u:fp+tn,n:g.length}}
+function both(k,c){var a=met(DATA[k].A,c),b=met(DATA[k].B,c);var ra=a.ap/a.n,rb=b.ap/b.n,hi=Math.max(ra,rb),lo=Math.min(ra,rb);
+  return{c:c,a:a,b:b,ratio:hi>0?lo/hi:null,lowIs:ra<rb?"A":(rb<ra?"B":null),acc:Math.round(100*(a.tp+a.tn+b.tp+b.tn)/(a.n+b.n))}}
+function ratioTxt(r){return r.ratio===null?"not defined, because nobody gets through":r.ratio.toFixed(2)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(ch){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]})}
+
+function strip(g,c,label,S){
+  var CW=12,L=14,ROW=11,cols=51,W=L*2+cols*CW,stacks={},maxH=0,i;
+  // shared height across both groups
+  ["A","B"].forEach(function(k){var t={};DATA[st.scn][k].forEach(function(p){var col=Math.floor(p[0]/2);t[col]=(t[col]||0)+1;if(t[col]>maxH)maxH=t[col]})});
+  var TOP=22,H=TOP+maxH*ROW+10,base=H,AX=26,x0=L+(c/2)*CW;
+  var o='<svg class="strip" viewBox="0 0 '+W+' '+(H+AX)+'" role="img" aria-label="'+esc(label)+'">';
+  o+='<rect x="'+x0+'" y="0" width="'+(W-x0)+'" height="'+H+'" fill="#FBF3DC"/>';
+  var sorted=g.slice().sort(function(p,q){return q[1]-p[1]});
+  for(i=0;i<sorted.length;i++){var s=sorted[i][0],q=sorted[i][1],col=Math.floor(s/2),k=stacks[col]||0;stacks[col]=k+1;
+    var cx=L+col*CW+CW/2,cy=base-6-k*ROW,ok=(s>=c)===(q===1),colr=ok?"#1F2328":"#A6192E";
+    o+=q?'<circle cx="'+cx+'" cy="'+cy+'" r="4.6" fill="'+colr+'"/>':'<circle cx="'+cx+'" cy="'+cy+'" r="3.8" fill="#fff" stroke="'+colr+'" stroke-width="'+(ok?1.5:1.9)+'"/>'}
+  o+='<line x1="'+L+'" y1="'+H+'" x2="'+(W-L)+'" y2="'+H+'" stroke="#1F2328" stroke-width="1"/>';
+  for(var t=0;t<=100;t+=20){var tx=L+(t/2)*CW;o+='<line x1="'+tx+'" y1="'+H+'" x2="'+tx+'" y2="'+(H+5)+'" stroke="#1F2328"/><text x="'+tx+'" y="'+(H+19)+'" font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#5A5F66" text-anchor="'+(t===0?"start":(t===100?"end":"middle"))+'">'+t+'</text>'}
+  o+='<line x1="'+x0+'" y1="0" x2="'+x0+'" y2="'+(H+6)+'" stroke="#A6192E" stroke-width="3"/>';
+  o+='<text x="'+(x0-6)+'" y="15" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#5A5F66" text-anchor="end">'+esc(S.no)+'</text>';
+  o+='<text x="'+(x0+6)+'" y="15" font-family="Arial,Helvetica,sans-serif" font-size="12" font-weight="bold" fill="#5A5F66">'+esc(S.yes)+'</text>';
+  return o+'</svg>'}
+function nums(m,S){return '<div><b>'+m.ap+' of '+m.n+'</b>'+S.Yes+'</div><div class="err"><b>'+m.fn+' of '+m.q+'</b>'+S.fn+'</div><div class="err"><b>'+m.fp+' of '+m.u+'</b>'+S.fp+'</div>'}
+
+function renderCards(){var o="";ORDER.forEach(function(k){var S=SCN[k];o+='<button class="card" data-k="'+k+'" aria-pressed="'+(st.scn===k)+'"><strong>'+S.name+'</strong>'+S.card+'</button>'});$("cards").innerHTML=o}
+function renderBrief(){var S=SCN[st.scn];$("brief").className="brief on";$("role").textContent=S.role;
+  $("fnHead").textContent="When it wrongly turns someone away";$("fnCost").textContent=S.fnCost;
+  $("fpHead").textContent="When it wrongly lets someone through";$("fpCost").textContent=S.fpCost;
+  var o="",acc=both(st.scn,VENDOR).acc;S.q.forEach(function(q,i){o+='<details data-i="'+i+'"'+(st.asked.indexOf(i)>=0?" open":"")+'><summary>'+q[0]+'</summary><p>'+q[1].replace("{ACC}",acc)+'</p></details>'});$("qa").innerHTML=o;
+  $("vend").textContent=VENDOR;$("lgQ").textContent="Filled: "+S.good;$("lgU").textContent="Hollow: "+S.bad;
+  $("gA").textContent=S.A;$("gB").textContent=S.B;$("gAsub").textContent="";$("gBsub").textContent=S.subB||"";
+  ["s2","s3","s4"].forEach(function(id){$(id).hidden=false})}
+function renderCut(){var k=st.scn,S=SCN[k],r=both(k,st.cut);$("cut").value=st.cut;$("cutv").textContent=st.cut;$("cut").setAttribute("aria-valuetext","Cutoff "+st.cut);
+  $("stripA").innerHTML=strip(DATA[k].A,st.cut,S.A+": "+r.a.ap+" of 100 "+S.yes+", "+r.a.fn+" wrongly "+S.no+", "+r.a.fp+" wrongly "+S.yes,S);
+  $("stripB").innerHTML=strip(DATA[k].B,st.cut,S.B+": "+r.b.ap+" of 100 "+S.yes+", "+r.b.fn+" wrongly "+S.no+", "+r.b.fp+" wrongly "+S.yes,S);
+  $("numsA").innerHTML=nums(r.a,S);$("numsB").innerHTML=nums(r.b,S);
+  $("v1").textContent="Wrongly "+S.no+": "+r.a.fn+" of "+r.a.q+" "+S.goodN+" "+S.a+", and "+r.b.fn+" of "+r.b.q+" "+S.goodN+" "+S.b+".";
+  $("v2").textContent="Wrongly "+S.yes+": "+r.a.fp+" of "+r.a.u+" "+S.a+" who "+S.bad+", and "+r.b.fp+" of "+r.b.u+" "+S.b+" who "+S.bad+".";
+  var f=r.ratio===null?"":(r.ratio<0.8?' <span class="flag no">Under 0.80. It fails the four-fifths check.</span>':' <span class="flag ok">At or above 0.80. It passes the four-fifths check.</span>');
+  $("v3").innerHTML="Approval-rate check: "+r.a.ap+" percent against "+r.b.ap+" percent. The ratio is "+ratioTxt(r)+"."+f}
+function renderPins(){var S=SCN[st.scn];
+  if(!st.pins.length){$("pins").innerHTML='<div class="empty">Nothing pinned yet. Move the cutoff to a setting worth comparing, then pin it.</div>';$("pick").innerHTML='<p class="small">Pin at least three cutoffs in step 3. They will appear here.</p>';return}
+  var o='<div class="tw"><table><thead><tr><th scope="col">Cutoff</th><th scope="col">'+S.Yes+'<br>A / B</th><th scope="col">'+S.fn+'<br>A / B</th><th scope="col">'+S.fp+'<br>A / B</th><th scope="col">Approval ratio</th><th scope="col"><span class="noprint">Remove</span></th></tr></thead><tbody>',p="";
+  st.pins.slice().sort(function(x,y){return x-y}).forEach(function(c){var r=both(st.scn,c);
+    o+='<tr><th scope="row">'+c+'</th><td class="num">'+r.a.ap+' / '+r.b.ap+'</td><td class="num">'+r.a.fn+' of '+r.a.q+' / '+r.b.fn+' of '+r.b.q+'</td><td class="num">'+r.a.fp+' of '+r.a.u+' / '+r.b.fp+' of '+r.b.u+'</td><td class="num">'+(r.ratio===null?"n/a":r.ratio.toFixed(2))+'</td><td><button class="sm" data-rm="'+c+'" aria-label="Remove cutoff '+c+'">Remove</button></td></tr>';
+    p+='<label class="opt"><input type="radio" name="pick" value="'+c+'"'+(st.pick===c?" checked":"")+'>Cutoff '+c+'</label>'});
+  o+='</tbody></table></div><p class="small">A is '+S.a+'. B is '+S.b+'.</p>';$("pins").innerHTML=o;$("pick").innerHTML=p}
+function missing(){var m=[];if(st.pins.length<3)m.push("Pin at least three cutoffs in step 3. You have "+st.pins.length+".");
+  if(st.pick===null||st.pins.indexOf(st.pick)<0)m.push("Choose the cutoff you are signing.");
+  if(!st.dec)m.push("Choose a decision.");if(st.why.trim().length<20)m.push("Give your reason in at least one full sentence.");if(!st.nm.trim())m.push("Type your name.");return m}
+function recordText(){var s=st.signed;if(!s)return"";var S=SCN[s.scn],r=both(s.scn,s.cut),L=[];
+  L.push("THE SIGN-OFF: RECORD OF DECISION");L.push("Signed by: "+s.nm);L.push("Date: "+s.date);L.push("System: "+S.name+", "+S.org+" (fictional)");
+  L.push("Decision: "+s.dec);L.push("Cutoff signed: "+s.cut+" (vendor suggested "+VENDOR+")");L.push("Reason: "+s.why);L.push("");
+  L.push("At cutoff "+s.cut+":");L.push("  "+S.Yes+": A "+r.a.ap+" of 100, B "+r.b.ap+" of 100");L.push("  "+S.fn+": A "+r.a.fn+" of "+r.a.q+", B "+r.b.fn+" of "+r.b.q);
+  L.push("  "+S.fp+": A "+r.a.fp+" of "+r.a.u+", B "+r.b.fp+" of "+r.b.u);L.push("  Approval ratio: "+(r.ratio===null?"n/a":r.ratio.toFixed(2)));
+  L.push("  A = "+S.a+". B = "+S.b+".");L.push("");L.push("Cutoffs compared:");
+  s.pins.forEach(function(c){var x=both(s.scn,c);L.push("  "+c+": "+S.yes+" "+x.a.ap+" / "+x.b.ap+"; "+S.fn.toLowerCase()+" "+x.a.fn+" / "+x.b.fn+"; "+S.fp.toLowerCase()+" "+x.a.fp+" / "+x.b.fp+"; ratio "+(x.ratio===null?"n/a":x.ratio.toFixed(2))+(c===s.cut?"  <- signed":""))});
+  L.push("Range of cutoffs explored: "+s.lo+" to "+s.hi);L.push("");L.push("Vendor questions asked before signing: "+s.asked.length+" of 3");
+  S.q.forEach(function(q,i){L.push("  ["+(s.asked.indexOf(i)>=0?"asked":"not asked")+"] "+q[0])});return L.join("\n")}
+function renderRecord(){var s=st.signed,el=$("record");if(!s){el.className="";el.innerHTML="";$("acts").hidden=true;$("next").hidden=true;return}
+  var S=SCN[s.scn],r=both(s.scn,s.cut),o='<h2>Record of decision</h2><p class="small" style="margin:0">The Sign-Off</p><div class="rule"></div><dl>';
+  function row(a,b){o+='<dt>'+a+'</dt><dd>'+b+'</dd>'}
+  row("Signed by",esc(s.nm));row("Date",esc(s.date));row("System",S.name+", "+S.org+" (fictional)");row("Decision","<strong>"+esc(s.dec)+"</strong>");
+  row("Cutoff signed",s.cut+" (vendor suggested "+VENDOR+")");row("Reason",esc(s.why));o+='</dl>';
+  o+='<h3>Cutoffs compared</h3><div class="tw"><table><thead><tr><th scope="col">Cutoff</th><th scope="col">'+S.Yes+'<br>A / B</th><th scope="col">'+S.fn+'<br>A / B</th><th scope="col">'+S.fp+'<br>A / B</th><th scope="col">Approval ratio</th></tr></thead><tbody>';
+  s.pins.forEach(function(c){var x=both(s.scn,c),b=c===s.cut;o+='<tr'+(b?' style="background:#FBF3DC"':'')+'><th scope="row">'+c+(b?" (signed)":"")+'</th><td class="num">'+x.a.ap+' / '+x.b.ap+'</td><td class="num">'+x.a.fn+' of '+x.a.q+' / '+x.b.fn+' of '+x.b.q+'</td><td class="num">'+x.a.fp+' of '+x.a.u+' / '+x.b.fp+' of '+x.b.u+'</td><td class="num">'+(x.ratio===null?"n/a":x.ratio.toFixed(2))+'</td></tr>'});
+  o+='</tbody></table></div><p class="small">A is '+S.a+'. B is '+S.b+'. Each group has 100 simulated applicants. Cutoffs explored: '+s.lo+' to '+s.hi+'.</p>';
+  o+='<h3>Vendor questions asked before signing: '+s.asked.length+' of 3</h3><ul class="sans" style="font-size:15px;margin:0 0 6px;padding-left:20px">';
+  S.q.forEach(function(q,i){o+='<li>'+(s.asked.indexOf(i)>=0?"Asked":"<strong>Not asked</strong>")+": "+q[0]+'</li>'});
+  o+='</ul><div class="sig">Signature of '+esc(s.nm)+'</div>';
+  el.innerHTML=o;el.className="on";$("acts").hidden=false;$("next").hidden=false}
+function renderAll(){renderCards();if(!st.scn)return;renderBrief();renderCut();renderPins();
+  var d=document.querySelectorAll('input[name=dec]');for(var i=0;i<d.length;i++)d[i].checked=d[i].value===st.dec;$("why").value=st.why;$("nm").value=st.nm;renderRecord()}
+function setCut(c){c=Math.max(20,Math.min(90,Math.round(c/2)*2));st.cut=c;if(c<st.lo)st.lo=c;if(c>st.hi)st.hi=c;renderCut();save()}
+function choose(k){if(st.scn===k)return;if(st.scn&&(st.pins.length||st.signed)&&!window.confirm("Switching scenarios clears your pinned cutoffs and your record. Switch?"))return;
+  st.scn=k;st.cut=VENDOR;st.lo=VENDOR;st.hi=VENDOR;st.pins=[];st.asked=[];st.pick=null;st.signed=null;save();renderAll();$("s2").scrollIntoView({behavior:"auto",block:"start"})}
+
+$("cards").addEventListener("click",function(e){var b=e.target.closest("button[data-k]");if(b)choose(b.getAttribute("data-k"))});
+$("qa").addEventListener("toggle",function(e){var d=e.target;if(d.open){var i=+d.getAttribute("data-i");if(st.asked.indexOf(i)<0){st.asked.push(i);st.asked.sort();save()}}},true);
+$("cut").addEventListener("input",function(){setCut(+this.value)});
+$("dn").addEventListener("click",function(){setCut(st.cut-2)});$("up").addEventListener("click",function(){setCut(st.cut+2)});
+$("pin").addEventListener("click",function(){var m=$("pinmsg");if(st.pins.indexOf(st.cut)>=0){m.textContent="Cutoff "+st.cut+" is already pinned.";return}
+  if(st.pins.length>=6){m.textContent="Six is the limit. Remove one first.";return}st.pins.push(st.cut);m.textContent="Pinned cutoff "+st.cut+".";save();renderPins()});
+$("pins").addEventListener("click",function(e){var b=e.target.closest("button[data-rm]");if(!b)return;var c=+b.getAttribute("data-rm");st.pins=st.pins.filter(function(x){return x!==c});if(st.pick===c)st.pick=null;save();renderPins()});
+$("pick").addEventListener("change",function(e){if(e.target.name==="pick"){st.pick=+e.target.value;save()}});
+document.addEventListener("change",function(e){if(e.target.name==="dec"){st.dec=e.target.value;save()}});
+$("why").addEventListener("input",function(){st.why=this.value;save()});$("nm").addEventListener("input",function(){st.nm=this.value;save()});
+$("sign").addEventListener("click",function(){var m=missing(),n=$("need");if(m.length){n.innerHTML="Before you can sign:<ul><li>"+m.map(esc).join("</li><li>")+"</li></ul>";return}n.innerHTML="";
+  var d=new Date(),mo=["January","February","March","April","May","June","July","August","September","October","November","December"];
+  st.signed={scn:st.scn,cut:st.pick,pins:st.pins.slice().sort(function(x,y){return x-y}),asked:st.asked.slice(),lo:st.lo,hi:st.hi,dec:st.dec,why:st.why.trim(),nm:st.nm.trim(),date:mo[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()};
+  save();renderRecord();$("record").scrollIntoView({behavior:"auto",block:"start"});$("record").focus()});
+$("print").addEventListener("click",function(){window.print()});
+$("copy").addEventListener("click",function(){var t=recordText(),m=$("copymsg");function done(){m.textContent="Copied. Paste it into your memo document."}
+  function fallback(){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done()}catch(e){m.textContent="Copy did not work in this browser. Use Print or save as PDF."}document.body.removeChild(ta)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fallback)}else fallback()});
+$("reset").addEventListener("click",function(){if(!window.confirm("Clear everything and start over?"))return;try{localStorage.removeItem(STORE)}catch(e){}
+  st={scn:null,cut:VENDOR,pins:[],asked:[],lo:VENDOR,hi:VENDOR,pick:null,dec:"",why:"",nm:"",signed:null};["s2","s3","s4"].forEach(function(id){$(id).hidden=true});$("brief").className="brief";$("need").innerHTML="";renderAll();renderRecord();window.scrollTo(0,0)});
+load();renderAll();
+</script>
+</body>
+</html>
