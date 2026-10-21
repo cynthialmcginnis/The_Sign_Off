@@ -4,7 +4,7 @@ An interactive exercise in approving an AI system before it goes live.
 
 Software is about to decide which applications get accepted: who gets a job interview, who gets a loan, or who gets an apartment. It scores every applicant from 0 to 100 and rejects everyone below a cutoff. You set the cutoff, see who the model gets wrong in each of two groups, and put your name on the decision.
 
-**Try it:** https://YOUR-USERNAME.github.io/the-sign-off/
+**Try it:** https://cynthialmcginnis.github.io/The_Sign_Off/
 
 ## How it works
 
